@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "dist/packages/airbnb-ui",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

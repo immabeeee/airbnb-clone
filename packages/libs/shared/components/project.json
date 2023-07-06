@@ -1,0 +1,80 @@
+{
+  "name": "libs-shared-components",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/libs/shared/components/src",
+  "prefix": "lib",
+  "tags": [],
+  "projectType": "library",
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/libs/shared/components/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "packages/libs/shared/components/**/*.ts",
+          "packages/libs/shared/components/**/*.html"
+        ]
+      }
+    },
+    "storybook": {
+      "executor": "@storybook/angular:start-storybook",
+      "options": {
+        "port": 4400,
+        "configDir": "packages/libs/shared/components/.storybook",
+        "browserTarget": "libs-shared-components:build-storybook",
+        "compodoc": false
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "build-storybook": {
+      "executor": "@storybook/angular:build-storybook",
+      "outputs": ["{options.outputDir}"],
+      "options": {
+        "outputDir": "dist/storybook/libs-shared-components",
+        "configDir": "packages/libs/shared/components/.storybook",
+        "browserTarget": "libs-shared-components:build-storybook",
+        "compodoc": false,
+        "assets": [
+          "packages/airbnb-ui/src/favicon.ico",
+          "packages/airbnb-ui/src/assets"
+        ],
+        "styles": ["packages/airbnb-ui/src/styles.scss"]
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "static-storybook": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "libs-shared-components:build-storybook",
+        "staticFilePath": "dist/storybook/libs-shared-components"
+      },
+      "configurations": {
+        "ci": {
+          "buildTarget": "libs-shared-components:build-storybook:ci"
+        }
+      }
+    }
+  }
+}
